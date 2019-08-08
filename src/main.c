@@ -818,6 +818,9 @@ HRESULT __stdcall ddraw_SetDisplayMode(IDirectDrawImpl *This, DWORD width, DWORD
         }
     }
 
+    if (!ddraw->windowed && ddraw->renderer == render_main)
+        This->render.height++;
+
     if (!ddraw->handlemouse)
         This->boxing = maintas = FALSE;
     
@@ -941,7 +944,7 @@ HRESULT __stdcall ddraw_SetDisplayMode2(IDirectDrawImpl *This, DWORD width, DWOR
 
 void ToggleFullscreen()
 {
-    if (ddraw->bnetActive)
+    if (ddraw->bnetActive && ddraw->renderer == render_d3d9_main)
         return;
 
     if (ddraw->windowed)
@@ -1299,7 +1302,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             return 0;
 
         case WM_ACTIVATE:
-            if (wParam == WA_ACTIVE || wParam == WA_CLICKACTIVE)
+        {
+            return 0;
+        }
+
+        case WM_ACTIVATEAPP:
+
+            if (wParam)
             {
                 if (!ddraw->windowed)
                 {
@@ -1307,25 +1316,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     {
                         ChangeDisplaySettings(&ddraw->render.mode, CDS_FULLSCREEN);
 
-                        if (wParam == WA_ACTIVE)
-                        {
-                            mouse_lock();
-                        }
+                        mouse_lock();
                     }
                 }
 
                 if (!ddraw->handlemouse)
                     RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE | RDW_ALLCHILDREN);
             }
-            else if (wParam == WA_INACTIVE)
+            else
             {
                 if (!ddraw->windowed && !ddraw->locked && ddraw->noactivateapp)
-                    return 0;
+                    goto aapp_end;
 
                 mouse_unlock();
 
                 if (ddraw->wine && LastSetWindowPosTick + 500 > timeGetTime())
-                    return 0;
+                    goto aapp_end;
 
                 /* minimize our window on defocus when in fullscreen */
                 if (!ddraw->windowed)
@@ -1337,9 +1343,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     }
                 }
             }
-            return 0;
 
-        case WM_ACTIVATEAPP:
+        aapp_end:
             /* C&C and RA stop drawing when they receive this with FALSE wParam, disable in windowed mode */
             if (ddraw->windowed || ddraw->noactivateapp)
             {

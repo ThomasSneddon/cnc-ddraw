@@ -104,7 +104,7 @@ void Settings_Load()
     // to do: read .glslp config file instead of the shader and apply the correct settings
     GetString("shader", "", ddraw->shader, sizeof(ddraw->shader));
 
-    GetString("renderer", "auto", tmp, sizeof(tmp));
+    GetString("renderer", "opengl", tmp, sizeof(tmp));
     printf("Using %s renderer\n", tmp);
 
     if (tolower(tmp[0]) == 's' || tolower(tmp[0]) == 'g') //gdi
@@ -241,7 +241,7 @@ static void CreateSettingsIni()
             "posY=-32000\n"
             "\n"
             "; Renderer, possible values: auto, opengl, gdi, direct3d9 (auto = try direct3d9/opengl, fallback = gdi)\n"
-            "renderer=auto\n"
+            "renderer=opengl\n"
             "\n"
             "; Developer mode (don't lock the cursor)\n"
             "devmode=false\n"
