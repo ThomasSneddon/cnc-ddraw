@@ -893,7 +893,7 @@ HRESULT __stdcall ddraw_SetDisplayMode(IDirectDrawImpl *This, DWORD width, DWORD
         }
         else
         {
-            real_SetWindowLongA(This->hWnd, GWL_STYLE, (GetWindowLong(This->hWnd, GWL_STYLE) | WS_OVERLAPPEDWINDOW) & ~WS_MAXIMIZEBOX);
+            real_SetWindowLongA(This->hWnd, GWL_STYLE, (GetWindowLong(This->hWnd, GWL_STYLE) | WS_OVERLAPPEDWINDOW) & ~(WS_MAXIMIZEBOX | WS_THICKFRAME));
         }
 
         if (ddraw->wine)
