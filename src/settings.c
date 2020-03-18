@@ -44,8 +44,13 @@ void Settings_Load()
     ddraw->accurateTimers = GetBool("accuratetimers", FALSE);
     ddraw->resizable = GetBool("resizable", TRUE);
 
+#if RN_FIX
+	WindowRect.right = 0;
+	WindowRect.bottom = 0;
+#else
     WindowRect.right = GetInt("width", 0);
     WindowRect.bottom = GetInt("height", 0);
+#endif
     WindowRect.left = GetInt("posX", -32000);
     WindowRect.top = GetInt("posY", -32000);
 
