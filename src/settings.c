@@ -252,7 +252,7 @@ static void CreateSettingsIni()
             "renderer=auto\n"
             "\n"
             "; Developer mode (don't lock the cursor)\n"
-            "devmode=false\n"
+            "devmode=true\n"
             "\n"
             "; Show window borders in windowed mode\n"
             "border=true\n"
