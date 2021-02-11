@@ -8,11 +8,17 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
+		develop|x86 = develop|x86
+		Release_Revenge|x86 = Release_Revenge|x86
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{96094551-5D52-4EBD-BE4C-5291A03507FC}.Debug|x86.ActiveCfg = Debug|Win32
 		{96094551-5D52-4EBD-BE4C-5291A03507FC}.Debug|x86.Build.0 = Debug|Win32
+		{96094551-5D52-4EBD-BE4C-5291A03507FC}.develop|x86.ActiveCfg = Release|Win32
+		{96094551-5D52-4EBD-BE4C-5291A03507FC}.develop|x86.Build.0 = Release|Win32
+		{96094551-5D52-4EBD-BE4C-5291A03507FC}.Release_Revenge|x86.ActiveCfg = Release_Revenge|Win32
+		{96094551-5D52-4EBD-BE4C-5291A03507FC}.Release_Revenge|x86.Build.0 = Release_Revenge|Win32
 		{96094551-5D52-4EBD-BE4C-5291A03507FC}.Release|x86.ActiveCfg = Release|Win32
 		{96094551-5D52-4EBD-BE4C-5291A03507FC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
