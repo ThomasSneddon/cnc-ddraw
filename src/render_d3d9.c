@@ -32,7 +32,7 @@ BOOL Direct3D9_Create()
         return FALSE;
 
     if (!Direct3D9_hModule)
-        Direct3D9_hModule = LoadLibrary("d3d9.dll");
+        Direct3D9_hModule = LoadLibrary(d3d9_module_name);
 
     if (Direct3D9_hModule)
     {

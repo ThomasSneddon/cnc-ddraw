@@ -15,6 +15,12 @@ static int GetInt(LPCSTR key, int defaultValue);
 static DWORD GetString(LPCSTR key, LPCSTR defaultValue, LPSTR outString, DWORD outSize);
 static void CreateSettingsIni();
 
+
+void GetCommandLineSettings()
+{
+	const TCHAR* pCmd = GetCommandLine();
+}
+
 void Settings_Load()
 {
     //set up settings ini
@@ -37,7 +43,7 @@ void Settings_Load()
     ddraw->boxing = GetBool("boxing", FALSE);
     ddraw->maintas = GetBool("maintas", FALSE);
     ddraw->adjmouse = GetBool("adjmouse", FALSE);
-    ddraw->devmode = GetBool("devmode", FALSE);
+	ddraw->devmode = GetBool("devmode", FALSE);
     ddraw->vsync = GetBool("vsync", FALSE);
     ddraw->noactivateapp = GetBool("noactivateapp", FALSE);
     ddraw->vhack = GetBool("vhack", FALSE);
@@ -112,9 +118,16 @@ void Settings_Load()
 
     // to do: read .glslp config file instead of the shader and apply the correct settings
     GetString("shader", "", ddraw->shader, sizeof(ddraw->shader));
-
-    GetString("renderer", "auto", tmp, sizeof(tmp));
-    printf("Using %s renderer\n", tmp);
+	auto const rDef =
+#if defined(RN_FIX)
+	"direct3d9";
+#elif DEVELOP
+	"opengl";
+#else
+	"auto";
+#endif
+	GetString("renderer", rDef, tmp, sizeof(tmp));
+	printf("Using %s renderer\n", tmp);
 
     if (tolower(tmp[0]) == 's' || tolower(tmp[0]) == 'g') //gdi
     {
@@ -141,7 +154,7 @@ void Settings_Load()
         LPDIRECT3D9 d3d = NULL;
 
         // Windows = Direct3D 9, Wine = OpenGL
-        if (!ddraw->wine && (Direct3D9_hModule = LoadLibrary("d3d9.dll")))
+        if (!ddraw->wine && (Direct3D9_hModule = LoadLibrary(d3d9_module_name)))
         {
             IDirect3D9 *(WINAPI *D3DCreate9)(UINT) =
                 (IDirect3D9 *(WINAPI *)(UINT))GetProcAddress(Direct3D9_hModule, "Direct3DCreate9");
