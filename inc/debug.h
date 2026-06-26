@@ -23,6 +23,10 @@ char* dbg_mes_to_str(int id);
 extern double g_dbg_frame_time;
 extern DWORD g_dbg_frame_count;
 
+#if defined(_DEBUG)
+    #define LOG_ENABLED // set this in compiler option to enable log
+#endif
+
 //#define _DEBUG 1
 
 /* use OutputDebugStringA rather than printf */
@@ -33,7 +37,7 @@ extern DWORD g_dbg_frame_count;
 
 
 
-#ifdef _DEBUG
+#ifdef LOG_ENABLED
 
 #ifdef _DEBUG_S
 

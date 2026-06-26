@@ -10,6 +10,7 @@ Global
 		Debug|x86 = Debug|x86
 		DebugLog|x86 = DebugLog|x86
 		Release|x86 = Release|x86
+		RNDebug|x86 = RNDebug|x86
 		RNRelease|x86 = RNRelease|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
@@ -19,6 +20,8 @@ Global
 		{96094551-5D52-4EBD-BE4C-5291A03507FC}.DebugLog|x86.Build.0 = DebugLog|Win32
 		{96094551-5D52-4EBD-BE4C-5291A03507FC}.Release|x86.ActiveCfg = Release|Win32
 		{96094551-5D52-4EBD-BE4C-5291A03507FC}.Release|x86.Build.0 = Release|Win32
+		{96094551-5D52-4EBD-BE4C-5291A03507FC}.RNDebug|x86.ActiveCfg = RNDebug|Win32
+		{96094551-5D52-4EBD-BE4C-5291A03507FC}.RNDebug|x86.Build.0 = RNDebug|Win32
 		{96094551-5D52-4EBD-BE4C-5291A03507FC}.RNRelease|x86.ActiveCfg = RNRelease|Win32
 		{96094551-5D52-4EBD-BE4C-5291A03507FC}.RNRelease|x86.Build.0 = RNRelease|Win32
 	EndGlobalSection
