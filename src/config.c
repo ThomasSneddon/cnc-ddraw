@@ -18,8 +18,6 @@ CNCDDRAWCONFIG g_config =
 
 void cfg_load()
 {
-    char tmp[256];
-
     cfg_init();
 
     /* load settings from ini */
@@ -81,7 +79,7 @@ void cfg_load()
     g_hook_dinput = cfg_get_bool("dinputhook", FALSE);
 
     g_ddraw->render.maxfps = cfg_get_int("maxfps", -1);
-    g_ddraw->render.minfps = cfg_get_int("minfps", 0);
+    g_ddraw->render.minfps = cfg_get_int("minfps", -1);
 
     if (g_ddraw->render.minfps > 1000)
     {
@@ -153,33 +151,42 @@ void cfg_load()
     /* to do: read .glslp config file instead of the shader and apply the correct settings  */
     cfg_get_string("shader", "", g_ddraw->shader, sizeof(g_ddraw->shader));
 
+#if defined(RN_FIX)
+    const char tmp[256] = "direct3d9";
+#else
+    char tmp[256];
     auto const rDef =
-    #if defined(RN_FIX)
         "direct3d9";
-    #elif DEVELOP
+    #if defined(DEVELOP)
         "opengl";
     #else
         "auto";
     #endif
-    //cfg_get_string("renderer", rDef, tmp, sizeof(tmp));
+    cfg_get_string("renderer", rDef, tmp, sizeof(tmp));
+#endif
+
     TRACE("     Using %s renderer\n", tmp);
 
     if (tolower(tmp[0]) == 's' || tolower(tmp[0]) == 'g') /* gdi */
     {
+        TRACE("GDI forced");
         g_ddraw->renderer = gdi_render_main;
     }
-    else if (tolower(tmp[0]) == 'd') /* direct3d9 */
+    else if (tolower(tmp[0]) == 'd' && d3d9_is_available()) /* direct3d9 */
     {
+        TRACE("D3D9 forced");
         g_ddraw->renderer = d3d9_render_main;
     }
     else if (tolower(tmp[0]) == 'o') /* opengl */
     {
+        TRACE("OpenGL forced");
         if (oglu_load_dll())
         {
             g_ddraw->renderer = ogl_render_main;
         }
         else
         {
+            TRACE("Software fallback");
             g_ddraw->show_driver_warning = TRUE;
             g_ddraw->renderer = gdi_render_main;
         }
@@ -188,10 +195,12 @@ void cfg_load()
     {
         if (!g_ddraw->wine && d3d9_is_available())
         {
+            TRACE("D3D9 loaded");
             g_ddraw->renderer = d3d9_render_main;
         }
         else if (oglu_load_dll())
         {
+            TRACE("OpenGL loaded");
             g_ddraw->renderer = ogl_render_main;
         }
         else
